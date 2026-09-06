@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FaastBite - Restaurant & Dining</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #f0151f;
+      --primary-hover: #d00f18;
+      --bg-dark: #121619;
+      --card-bg: #1c2126;
+      --text-light: #ffffff;
+      --text-gray: #a5b1c2;
+      --border: rgba(255, 255, 255, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+    body { background-color: var(--bg-dark); color: var(--text-light); }
+
+    /* Navigation Bar */
+    .navbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 8%; background: rgba(18, 22, 25, 0.95);
+      position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border);
+    }
+    .brand-logo { font-size: 24px; font-weight: 800; text-transform: uppercase; text-decoration: none; color: #fff; }
+    .brand-logo span { color: var(--primary); }
+    .nav-links { display: flex; gap: 20px; list-style: none; }
+    .nav-links a { color: var(--text-light); text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.3s; }
+    .nav-links a:hover { color: var(--primary); }
+
+    /* Hero Section */
+    .hero-wrapper {
+      position: relative; height: 85vh; width: 100%; background: #000;
+      display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center;
+    }
+    .hero-bg { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
+    .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
+    .logo-badge { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--primary); margin: 0 auto 20px; overflow: hidden; background: #000; }
+    .logo-badge img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-title { font-size: 48px; font-weight: 800; margin-bottom: 10px; }
+    .hero-subtitle { font-size: 16px; color: var(--text-gray); margin-bottom: 30px; }
+    
+    .btn-group { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .btn-action { padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
+    .btn-primary { background: var(--primary); color: #fff; border: none; cursor: pointer; }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    .btn-outline { border: 2px solid var(--primary); color: #fff; text-decoration: none; }
+    .btn-outline:hover { background: var(--primary); }
+
+    /* Sections Shared Styles */
+    section { padding: 70px 8%; }
+    .section-title { text-align: center; margin-bottom: 40px; }
+    .section-title h2 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+    .section-title h2 span { color: var(--primary); }
+    .section-title p { color: var(--text-gray); font-size: 14px; }
+
+    /* Current Offers Section */
+    .offers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .offer-img-card { position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; height: 220px; border: 1px solid var(--border); }
+    .offer-img-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .offer-img-card:hover img { transform: scale(1.08); }
+    .offer-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
+    .offer-img-card:hover .offer-overlay { opacity: 1; }
+    .offer-overlay i { font-size: 30px; color: var(--primary); }
+
+    /* Modal Popup */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+    .modal-backdrop.active { display: flex; }
+    .modal-box { background: var(--card-bg); border-radius: 16px; max-width: 500px; width: 100%; padding: 30px; border: 1px solid var(--border); position: relative; text-align: center; }
+    .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--text-gray); font-size: 20px; cursor: pointer; }
+    .modal-close:hover { color: var(--primary); }
+    .modal-box h3 { color: var(--primary); font-size: 24px; margin-bottom: 12px; }
+    .modal-box p { color: var(--text-gray); font-size: 15px; line-height: 1.6; }
+
+    /* Image Zoom Popup Modal */
+    .img-zoom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1100; padding: 20px; }
+    .img-zoom-modal.active { display: flex; }
+    .img-zoom-content { max-width: 90%; max-height: 90vh; border-radius: 8px; object-fit: contain; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+
+    /* Custom Carousel/Slider Layout */
+    .carousel-container { position: relative; width: 100%; overflow: hidden; margin-bottom: 30px; }
+    .carousel-track { display: flex; transition: transform 0.6s ease-in-out; width: 100%; }
+    .carousel-slide { min-width: 100%; box-sizing: border-box; }
+
+    /* Menu Card Slider Specific (4 Items Per Slide, Full Image Frame) */
+    .menu-cards-slide { 
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 15px; 
+      align-items: center;
+    }
+
+    .menu-card-wrapper {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 8px;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .menu-card-wrapper:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+    }
+
+    .menu-card-img { 
+      max-width: 100%; 
+      max-height: 100%; 
+      width: auto; 
+      height: auto; 
+      object-fit: contain; 
+      border-radius: 6px; 
+    }
+
+    /* Gallery Slider Specific (3 Items Per Slide) */
+    .gallery-slide { 
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); 
+      gap: 20px;
+    }
+    .gallery-item { height: 260px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); position: relative; cursor: pointer; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+    .gallery-item:hover img { transform: scale(1.08); }
+
+    /* Slide Bar / Dots Navigation */
+    .slider-dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+    .dot { width: 12px; height: 12px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; cursor: pointer; transition: 0.3s; }
+    .dot.active { background: var(--primary); width: 28px; border-radius: 10px; }
+
+    /* Serve Menu Items Listing */
+    .category-tabs { display: flex; justify-content: center; gap: 12px; margin-bottom: 35px; flex-wrap: wrap; }
+    .category-btn { padding: 10px 22px; background: var(--card-bg); border: 1px solid var(--border); color: #fff; border-radius: 25px; cursor: pointer; font-weight: 500; font-size: 14px; transition: 0.3s; }
+    .category-btn.active, .category-btn:hover { background: var(--primary); border-color: var(--primary); }
+
+    .food-items-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+    .food-item { display: flex; gap: 15px; align-items: center; background: var(--card-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--border); }
+    .food-item img { width: 85px; height: 85px; border-radius: 10px; object-fit: cover; }
+    .food-info { flex: 1; }
+    .food-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+    .food-name { font-size: 16px; font-weight: 600; color: #fff; }
+    .food-price { font-size: 16px; font-weight: 700; color: var(--primary); }
+    .food-desc { font-size: 13px; color: var(--text-gray); line-height: 1.4; }
+
+    /* Reservation Section */
+    .reservation-section { background: linear-gradient(rgba(18, 22, 25, 0.9), rgba(18, 22, 25, 0.9)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80') center/cover; }
+    .reservation-form { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: rgba(28, 33, 38, 0.85); padding: 40px; border-radius: 16px; border: 1px solid var(--border); }
+    .form-group-full { grid-column: span 2; }
+    .reservation-form input, .reservation-form select { width: 100%; padding: 12px 16px; background: rgba(18, 22, 25, 0.8); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 14px; }
+    .reservation-form input:focus, .reservation-form select:focus { border-color: var(--primary); outline: none; }
+
+    /* Footer */
+    footer { background: #0b0d0e; padding: 50px 8% 20px; border-top: 1px solid var(--border); }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-bottom: 40px; }
+    .footer-box h4 { font-size: 18px; color: var(--primary); margin-bottom: 15px; }
+    .footer-box p, .footer-box a { color: var(--text-gray); font-size: 14px; text-decoration: none; display: block; margin-bottom: 8px; }
+    .social-links { display: flex; gap: 12px; margin-top: 15px; }
+    .social-links a { width: 38px; height: 38px; background: var(--card-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; border: 1px solid var(--border); transition: 0.3s; }
+    .social-links a:hover { background: var(--primary); border-color: var(--primary); }
+    .footer-bottom { text-align: center; border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-gray); }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .menu-cards-slide { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .navbar { flex-direction: column; gap: 12px; }
+      .nav-links { gap: 12px; font-size: 12px; flex-wrap: wrap; justify-content: center; }
+      .hero-title { font-size: 32px; }
+      .reservation-form { grid-template-columns: 1fr; }
+      .form-group-full { grid-column: span 1; }
+      .gallery-slide { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 576px) {
+      .menu-cards-slide { grid-template-columns: repeat(1, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="#" class="brand-logo" id="navBrand">Faast<span>Bite</span></a>
+    <ul class="nav-links">
+      <li><a href="#offers">Current Offers</a></li>
+      <li><a href="#menu">Our Menu</a></li>
+      <li><a href="#reservation">Reserve Seats</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero-wrapper">
+    <img id="heroBg" class="hero-bg" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=80" alt="Hero">
+    <div class="hero-content">
+      <div class="logo-badge">
+        <img id="logoImg" src="https://via.placeholder.com/150?text=Logo" alt="Logo">
+      </div>
+      <h1 class="hero-title" id="resName">FaastBite</h1>
+      <p class="hero-subtitle" id="resTagline">Taste & Quality Brought Together Perfectly</p>
+      
+      <div class="btn-group">
+        <a id="callBtn" href="#" class="btn-action btn-primary"><i class="fa-solid fa-phone"></i> Call Now</a>
+        <a id="waBtn" href="#" target="_blank" class="btn-action btn-outline"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+        <a id="mapBtn" href="#" target="_blank" class="btn-action btn-outline"><i class="fa-solid fa-location-dot"></i> Find Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offers Section -->
+  <section id="offers">
+    <div class="section-title">
+      <h2>Current <span>Offers</span></h2>
+      <p>Click on any offer image to view complete offer details</p>
+    </div>
+    <div class="offers-grid" id="offersContainer"></div>
+  </section>
+
+  <!-- Offer Modal -->
+  <div class="modal-backdrop" id="offerModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      <h3 id="modalTitle">Special Offer Title</h3>
+      <p id="modalDesc">Detailed description of the offer goes here.</p>
+    </div>
+  </div>
+
+  <!-- Image Zoom Modal -->
+  <div class="img-zoom-modal" id="imgZoomModal" onclick="closeZoomModal()">
+    <img class="img-zoom-content" id="zoomedImgSrc" src="" alt="Zoomed Image">
+  </div>
+
+  <!-- Menu Section -->
+  <section id="menu" style="background: var(--card-bg);">
+    <div class="section-title">
+      <h2>Our <span>Menu Card</span></h2>
+      <p>Explore our official physical menu card below (Click image to zoom)</p>
+    </div>
+    
+    <!-- Menu Card Slider Container (4 Items per slide) -->
+    <div class="carousel-container">
+      <div class="carousel-track" id="menuCardsTrack"></div>
+    </div>
+    <div class="slider-dots" id="menuCardsDots"></div>
+
+    <div class="section-title" style="margin-top: 60px;">
+      <h2>What Kind of Foods <span>We Serve For You</span></h2>
+      <p>Filtered food items prepared fresh every day</p>
+    </div>
+
+    <div class="category-tabs" id="categoryTabs">
+      <button class="category-btn active" onclick="filterMenu('all')">All</button>
+    </div>
+
+    <div class="food-items-grid" id="foodItemsGrid"></div>
+  </section>
+
+  <!-- Reservation Section -->
+  <section id="reservation" class="reservation-section">
+    <div class="section-title">
+      <h2>Reserve Your Seats <span>To Confirm</span></h2>
+      <p>If you come with your family or friends, book your table in advance</p>
+    </div>
+    <form class="reservation-form" id="resForm">
+      <div><input type="text" id="resGuestName" placeholder="Your Full Name" required></div>
+      <div><input type="tel" id="resGuestPhone" placeholder="Phone Number" required></div>
+      <div><input type="email" id="resGuestEmail" placeholder="Email Address"></div>
+      <div>
+        <select id="resGuestCount" required>
+          <option value="">Number of Persons</option>
+          <option value="1 Person">1 Person</option>
+          <option value="2 Persons">2 Persons</option>
+          <option value="4 Persons">4 Persons</option>
+          <option value="6+ Family">6+ Family / Group</option>
+        </select>
+      </div>
+      <div><input type="date" id="resDate" required></div>
+      <div><input type="time" id="resTime" required></div>
+      <div class="form-group-full">
+        <button type="submit" class="btn-action btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
+          Make Reservation
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery">
+    <div class="section-title">
+      <h2>Food & Customer <span>Gallery</span></h2>
+      <p>Capturing joyful moments and delightful dishes</p>
+    </div>
+
+    <!-- Gallery Slider Container (3 Items per slide) -->
+    <div class="carousel-container">
+      <div class="carousel-track" id="galleryTrack"></div>
+    </div>
+    <div class="slider-dots" id="galleryDots"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="footer-grid">
+      <div class="footer-box">
+        <h4 id="footerName">FaastBite</h4>
+        <p id="footerAddress">Loading address...</p>
+        <p id="footerHours"><i class="fa-regular fa-clock"></i> Loading hours...</p>
+      </div>
+
+      <div class="footer-box">
+        <h4>Contact Us</h4>
+        <p id="phoneText">Phone: -</p>
+        <p id="emailText">Email: -</p>
+      </div>
+
+      <div class="footer-box">
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a id="waLink" href="#" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a id="instaLink" href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+          <a id="ytLink" href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+          <a id="ttLink" href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      &copy; 2026 FaastBite | All Rights Reserved.
+    </div>
+  </footer>
+
+  <script>
+    let allFoodItems = [];
+
+    function openModal(title, desc) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalDesc').innerText = desc;
+      document.getElementById('offerModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('offerModal').classList.remove('active');
+    }
+
+    function zoomImage(url) {
+      document.getElementById('zoomedImgSrc').src = url;
+      document.getElementById('imgZoomModal').classList.add('active');
+    }
+
+    function closeZoomModal() {
+      document.getElementById('imgZoomModal').classList.remove('active');
+    }
+
+    function filterMenu(category) {
+      const btns = document.querySelectorAll('.category-btn');
+      btns.forEach(b => b.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      renderFoodItems(category);
+    }
+
+    function renderFoodItems(category) {
+      const grid = document.getElementById('foodItemsGrid');
+      grid.innerHTML = '';
+
+      const filtered = category === 'all' 
+        ? allFoodItems 
+        : allFoodItems.filter(item => item.category === category);
+
+      if(filtered.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-gray);">No food items found in this category.</p>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        grid.innerHTML += `
+          <div class="food-item">
+            <img src="${item.imageUrl || 'https://via.placeholder.com/100'}" alt="${item.name}">
+            <div class="food-info">
+              <div class="food-head">
+                <span class="food-name">${item.name}</span>
+                <span class="food-price">৳${item.price}</span>
+              </div>
+              <p class="food-desc">${item.description || ''}</p>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    /* Slider Helper Function */
+    function setupAutoSlider(trackId, dotsId, slideCount, intervalTime = 5000) {
+      let currentIndex = 0;
+      const track = document.getElementById(trackId);
+      const dotsContainer = document.getElementById(dotsId);
+
+      if (slideCount <= 1) return;
+
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < slideCount; i++) {
+        const dot = document.createElement('div');
+        dot.className = `dot ${i === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+      }
+
+      function goToSlide(index) {
+        currentIndex = index;
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        const dots = dotsContainer.children;
+        for (let i = 0; i < dots.length; i++) {
+          dots[i].classList.toggle('active', i === currentIndex);
+        }
+      }
+
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % slideCount;
+        goToSlide(currentIndex);
+      }, intervalTime);
+    }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBMtcz26R_DnJEKGKv13TevABLu7Z6y-C4",
+      authDomain: "saffronclient.firebaseapp.com",
+      projectId: "saffronclient",
+      storageBucket: "saffronclient.firebasestorage.app",
+      messagingSenderId: "71723897421",
+      appId: "1:71723897421:web:6998284b9d48a02096c204",
+      measurementId: "G-3FH2128FN2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadData() {
+      try {
+        // 1. Load Main Data
+        const docRef = doc(db, "restaurants", "mainData");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const d = docSnap.data();
+
+          if (d.restaurantName) {
+            document.getElementById("resName").innerText = d.restaurantName;
+            document.getElementById("navBrand").innerHTML = `${d.restaurantName.slice(0, 5)}<span>${d.restaurantName.slice(5)}</span>`;
+            document.getElementById("footerName").innerText = d.restaurantName;
+          }
+          if (d.tagline) document.getElementById("resTagline").innerText = d.tagline;
+
+          if (d.phone) {
+            document.getElementById("callBtn").href = `tel:${d.phone}`;
+            document.getElementById("phoneText").innerText = `Phone: ${d.phone}`;
+          }
+          if (d.whatsapp) {
+            document.getElementById("waBtn").href = `https://wa.me/${d.whatsapp}`;
+            document.getElementById("waLink").href = `https://wa.me/${d.whatsapp}`;
+          }
+          if (d.email) document.getElementById("emailText").innerText = `Email: ${d.email}`;
+          if (d.address) document.getElementById("footerAddress").innerText = d.address;
+          if (d.operatingHours) document.getElementById("footerHours").innerText = d.operatingHours;
+          if (d.googleMapsUrl) document.getElementById("mapBtn").href = d.googleMapsUrl;
+
+          if (d.instagram) document.getElementById("instaLink").href = d.instagram;
+          if (d.youtube) document.getElementById("ytLink").href = d.youtube;
+          if (d.tiktok) document.getElementById("ttLink").href = d.tiktok;
+
+          if (d.logoUrl) document.getElementById("logoImg").src = d.logoUrl;
+          if (d.coverUrl) document.getElementById("heroBg").src = d.coverUrl;
+
+          // Offers Render
+          const offersContainer = document.getElementById("offersContainer");
+          offersContainer.innerHTML = "";
+          if (d.offersList && d.offersList.length > 0) {
+            d.offersList.forEach(off => {
+              offersContainer.innerHTML += `
+                <div class="offer-img-card" onclick="openModal('${off.title.replace(/'/g, "\\'")}', '${off.desc.replace(/'/g, "\\'")}')">
+                  <img src="${off.imageUrl || 'https://via.placeholder.com/400x250?text=Special+Offer'}" alt="Offer">
+                  <div class="offer-overlay"><i class="fa-solid fa-circle-plus"></i></div>
+                </div>
+              `;
+            });
+          } else {
+            offersContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-gray);">No active offers currently available.</p>`;
+          }
+
+          // Category & Foods
+          const categoryTabs = document.getElementById("categoryTabs");
+          if (d.categories && d.categories.length > 0) {
+            d.categories.forEach(cat => {
+              categoryTabs.innerHTML += `<button class="category-btn" onclick="filterMenu('${cat}')">${cat}</button>`;
+            });
+          }
+
+          if (d.foodItems) {
+            allFoodItems = d.foodItems;
+            renderFoodItems('all');
+          }
+        }
+
+        // 2. Load Separated Menu Cards Data with Slider (4 Items per slide, Full Image)
+        const menuCardsTrack = document.getElementById("menuCardsTrack");
+        menuCardsTrack.innerHTML = "";
+        const menuSnap = await getDoc(doc(db, "restaurants", "menuCards"));
+        if (menuSnap.exists()) {
+          const menuData = menuSnap.data();
+          const cardsList = menuData.menuCardUrls || [];
+          
+          if (cardsList.length > 0) {
+            const chunkSize = 4; // ৪টি করে ছবি প্রতি স্লাইডে
+            let slideCount = 0;
+            
+            for (let i = 0; i < cardsList.length; i += chunkSize) {
+              const chunk = cardsList.slice(i, i + chunkSize);
+              let slideHtml = `<div class="carousel-slide menu-cards-slide">`;
+              
+              chunk.forEach(url => {
+                slideHtml += `
+                  <div class="menu-card-wrapper" onclick="zoomImage('${url}')">
+                    <img class="menu-card-img" src="${url}" alt="Menu Card Page">
+                  </div>
+                `;
+              });
+              
+              slideHtml += `</div>`;
+              menuCardsTrack.innerHTML += slideHtml;
+              slideCount++;
+            }
+            
+            setupAutoSlider('menuCardsTrack', 'menuCardsDots', slideCount, 5000);
+          } else {
+            menuCardsTrack.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-gray);">No menu cards uploaded yet.</p>`;
+          }
+        }
+
+        // 3. Load Separated Gallery Data with Slider (3 Items per slide, auto-change every 5 seconds)
+        const galleryTrack = document.getElementById("galleryTrack");
+        galleryTrack.innerHTML = "";
+        const gallerySnap = await getDoc(doc(db, "restaurants", "gallery"));
+        if (gallerySnap.exists()) {
+          const galleryData = gallerySnap.data();
+          const galleryList = galleryData.galleryList || [];
+          
+          if (galleryList.length > 0) {
+            const chunkSize = 3;
+            let slideCount = 0;
+            for (let i = 0; i < galleryList.length; i += chunkSize) {
+              const chunk = galleryList.slice(i, i + chunkSize);
+              let slideHtml = `<div class="carousel-slide gallery-slide">`;
+              chunk.forEach(gImg => {
+                slideHtml += `<div class="gallery-item" onclick="zoomImage('${gImg}')"><img src="${gImg}" alt="Gallery Image"></div>`;
+              });
+              slideHtml += `</div>`;
+              galleryTrack.innerHTML += slideHtml;
+              slideCount++;
+            }
+            setupAutoSlider('galleryTrack', 'galleryDots', slideCount, 5000);
+          } else {
+            galleryTrack.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-gray);">No gallery images available.</p>`;
+          }
+        }
+
+      } catch (e) {
+        console.error("Error loading data:", e);
+      }
+    }
+
+    document.getElementById("resForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("resGuestName").value;
+      const phone = document.getElementById("resGuestPhone").value;
+      const email = document.getElementById("resGuestEmail").value;
+      const count = document.getElementById("resGuestCount").value;
+      const date = document.getElementById("resDate").value;
+      const time = document.getElementById("resTime").value;
+
+      const msg = `Hello! Table Reservation Request:\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nGuests: ${count}\nDate: ${date}\nTime: ${time}`;
+      const waNumber = document.getElementById("waBtn").href.replace("https://wa.me/", "");
+      
+      if(waNumber && waNumber !== "#") {
+        window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+      } else {
+        alert("Table Reservation Details Saved. We will contact you soon!");
+      }
+    });
+
+    loadData();
+  </script>
+</body>
+</html>
