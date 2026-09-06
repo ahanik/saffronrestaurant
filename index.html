@@ -5,218 +5,277 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FaastBite - Restaurant & Dining</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #f0151f;
-      --primary-hover: #d00f18;
-      --bg-dark: #121619;
-      --card-bg: #1c2126;
-      --text-light: #ffffff;
-      --text-gray: #a5b1c2;
-      --border: rgba(255, 255, 255, 0.08);
+      --primary: #e5a93c;
+      --primary-hover: #c98e2b;
+      --bg-dark: #121212;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --text-light: #ececec;
+      --text-gray: #aaaaaa;
+      --border: rgba(255, 255, 255, 0.1);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
-    body { background-color: var(--bg-dark); color: var(--text-light); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+    
+    .uppercase-brand { text-transform: uppercase; }
 
-    /* Navigation Bar */
+    body { 
+      background: #111111 url('https://www.transparenttextures.com/patterns/dark-chalkboard.png'); 
+      color: var(--text-light); 
+    }
+
+    /* Top Navigation Bar */
     .navbar {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 18px 8%; background: rgba(18, 22, 25, 0.95);
+      display: flex; flex-direction: column; align-items: center;
+      padding: 20px 8% 10px; background: rgba(18, 18, 18, 0.95);
       position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border);
     }
-    .brand-logo { font-size: 24px; font-weight: 800; text-transform: uppercase; text-decoration: none; color: #fff; }
+    .top-logo-img {
+      width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid var(--primary); margin-bottom: 5px;
+    }
+    .brand-logo { 
+      font-family: 'Playfair Display', serif; font-size: 24px; letter-spacing: 2px; 
+      text-transform: uppercase; text-decoration: none; color: #fff; text-align: center;
+      margin-bottom: 8px;
+    }
     .brand-logo span { color: var(--primary); }
-    .nav-links { display: flex; gap: 20px; list-style: none; }
-    .nav-links a { color: var(--text-light); text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.3s; }
-    .nav-links a:hover { color: var(--primary); }
+    
+    .flag-stripe {
+      display: flex; width: 120px; height: 3px; margin-top: 4px;
+    }
+    .flag-stripe span:nth-child(1) { background: #000; flex: 1; }
+    .flag-stripe span:nth-child(2) { background: #dd0000; flex: 1; }
+    .flag-stripe span:nth-child(3) { background: #ffcc00; flex: 1; }
 
     /* Hero Section */
-    .hero-wrapper {
-      position: relative; height: 85vh; width: 100%; background: #000;
-      display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center;
+    .hero-container-outer { padding: 40px 8% 0; width: 100%; }
+    .hero-wooden-frame {
+      width: 100%;
+      border: 12px solid #5c3a21;
+      box-shadow: inset 0 0 15px #000, 0 15px 30px rgba(0,0,0,0.8);
+      position: relative; min-height: 450px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
     }
-    .hero-bg { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
-    .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
-    .logo-badge { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--primary); margin: 0 auto 20px; overflow: hidden; background: #000; }
-    .logo-badge img { width: 100%; height: 100%; object-fit: cover; }
-    .hero-title { font-size: 48px; font-weight: 800; margin-bottom: 10px; }
-    .hero-subtitle { font-size: 16px; color: var(--text-gray); margin-bottom: 30px; }
+    .hero-bg { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.50; }
     
-    .btn-group { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-    .btn-action { padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
-    .btn-primary { background: var(--primary); color: #fff; border: none; cursor: pointer; }
-    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
-    .btn-outline { border: 2px solid var(--primary); color: #fff; text-decoration: none; }
-    .btn-outline:hover { background: var(--primary); }
+    .hero-content { 
+      position: relative; z-index: 2; width: 85%; max-width: 700px;
+      padding: 35px 20px; border: 1px solid var(--primary); 
+      background: rgba(0, 0, 0, 0.85); text-align: center;
+    }
+    
+    .hero-title { font-family: 'Playfair Display', serif; font-size: 34px; color: var(--primary); margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
+    .hero-type-subtitle { font-size: 13px; text-transform: uppercase; letter-spacing: 3px; color: #fff; margin-bottom: 12px; font-weight: 500; }
+    
+    .ornamental-divider {
+      display: flex; align-items: center; justify-content: center; gap: 12px; margin: 12px auto 16px; color: var(--primary);
+    }
+    .ornamental-divider::before, .ornamental-divider::after {
+      content: ""; height: 1px; flex: 1;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      max-width: 120px;
+    }
+    .ornamental-divider i { font-size: 18px; }
+
+    .hero-subtitle { font-size: 13px; color: var(--text-gray); margin-bottom: 22px; font-style: italic; }
+    
+    .btn-group { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .btn-action { padding: 8px 18px; border-radius: 0; text-decoration: none; font-weight: 600; font-size: 11px; text-transform: uppercase; display: inline-flex; align-items: center; gap: 6px; transition: 0.3s; }
+    .btn-primary { background: var(--primary); color: #000; border: none; cursor: pointer; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline { border: 1px solid var(--primary); color: #fff; text-decoration: none; }
+    .btn-outline:hover { background: var(--primary); color: #000; }
+
+    /* Welcome Section styled exactly like Current Offers header */
+    .welcome-section {
+      text-align: center; padding: 50px 5% 30px; max-width: 1600px; margin: 0 auto;
+    }
+    
+    .welcome-heading-box {
+      display: inline-block;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .welcome-heading-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-style: italic;
+      display: inline-block;
+      border-top: 1px solid var(--primary);
+      border-bottom: 1px solid var(--primary);
+      padding: 6px 35px;
+      color: #fff;
+      font-weight: 700;
+    }
+    .welcome-heading-box h2 span { 
+      color: var(--primary); 
+      text-transform: uppercase; 
+    }
+
+    .welcome-section p {
+      color: var(--text-gray); font-size: 16px; line-height: 1.8; max-width: 1300px; margin: 0 auto; padding: 0 20px;
+    }
 
     /* Sections Shared Styles */
-    section { padding: 70px 8%; }
-    .section-title { text-align: center; margin-bottom: 40px; }
-    .section-title h2 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
-    .section-title h2 span { color: var(--primary); }
-    .section-title p { color: var(--text-gray); font-size: 14px; }
+    section { padding: 40px 8%; }
+    .section-title { text-align: center; margin-bottom: 35px; }
+    .section-title h2 { 
+      font-family: 'Playfair Display', serif; font-size: 26px; font-style: italic; 
+      display: inline-block; border-top: 1px solid var(--primary); border-bottom: 1px solid var(--primary); 
+      padding: 5px 30px; margin-bottom: 10px;
+      color: #fff;
+    }
+    .section-title h2 span { color: var(--primary); text-transform: uppercase; }
+    .section-title p { color: var(--text-gray); font-size: 13px; }
 
-    /* Current Offers Section */
+    /* Offers Section */
     .offers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-    .offer-img-card { position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; height: 220px; border: 1px solid var(--border); }
+    .offer-img-card { position: relative; border: 1px solid var(--border); overflow: hidden; cursor: pointer; height: 220px; background: #000; }
     .offer-img-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
     .offer-img-card:hover img { transform: scale(1.08); }
-    .offer-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
+    .offer-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
     .offer-img-card:hover .offer-overlay { opacity: 1; }
     .offer-overlay i { font-size: 30px; color: var(--primary); }
 
-    /* Modal Popup */
+    /* Modals */
     .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
     .modal-backdrop.active { display: flex; }
-    .modal-box { background: var(--card-bg); border-radius: 16px; max-width: 500px; width: 100%; padding: 30px; border: 1px solid var(--border); position: relative; text-align: center; }
+    .modal-box { background: #181818; border: 1px solid var(--primary); max-width: 500px; width: 100%; padding: 30px; position: relative; text-align: center; }
     .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--text-gray); font-size: 20px; cursor: pointer; }
     .modal-close:hover { color: var(--primary); }
-    .modal-box h3 { color: var(--primary); font-size: 24px; margin-bottom: 12px; }
-    .modal-box p { color: var(--text-gray); font-size: 15px; line-height: 1.6; }
+    .modal-box h3 { font-family: 'Playfair Display', serif; color: var(--primary); font-size: 24px; margin-bottom: 12px; }
+    .modal-box p { color: var(--text-gray); font-size: 14px; line-height: 1.6; }
 
-    /* Image Zoom Popup Modal */
     .img-zoom-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1100; padding: 20px; }
     .img-zoom-modal.active { display: flex; }
-    .img-zoom-content { max-width: 90%; max-height: 90vh; border-radius: 8px; object-fit: contain; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+    .img-zoom-content { max-width: 90%; max-height: 90vh; border: 2px solid var(--primary); object-fit: contain; }
 
-    /* Custom Carousel/Slider Layout */
+    /* Custom Carousel Layout */
     .carousel-container { position: relative; width: 100%; overflow: hidden; margin-bottom: 30px; }
     .carousel-track { display: flex; transition: transform 0.6s ease-in-out; width: 100%; }
     .carousel-slide { min-width: 100%; box-sizing: border-box; }
 
-    /* Menu Card Slider Specific (4 Items Per Slide, Full Image Frame) */
-    .menu-cards-slide { 
-      display: grid;
-      grid-template-columns: repeat(4, 1fr); 
-      gap: 15px; 
-      align-items: center;
-    }
-
+    .menu-cards-slide { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; align-items: center; }
     .menu-card-wrapper {
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      padding: 8px;
-      height: 380px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.3s ease, border-color 0.3s ease;
+      background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); padding: 8px; height: 320px;
+      display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; transition: 0.3s;
     }
+    .menu-card-wrapper:hover { border-color: var(--primary); }
+    .menu-card-img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-    .menu-card-wrapper:hover {
-      transform: translateY(-5px);
-      border-color: var(--primary);
+    .gallery-slide { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: center; }
+    .gallery-item { 
+      background: rgba(0, 0, 0, 0.4); height: 220px; border: 1px solid var(--border);
+      position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 8px; transition: 0.3s;
     }
+    .gallery-item:hover { border-color: var(--primary); }
+    .gallery-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-    .menu-card-img { 
-      max-width: 100%; 
-      max-height: 100%; 
-      width: auto; 
-      height: auto; 
-      object-fit: contain; 
-      border-radius: 6px; 
-    }
-
-    /* Gallery Slider Specific (3 Items Per Slide) */
-    .gallery-slide { 
-      display: grid;
-      grid-template-columns: repeat(3, 1fr); 
-      gap: 20px;
-    }
-    .gallery-item { height: 260px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); position: relative; cursor: pointer; }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
-    .gallery-item:hover img { transform: scale(1.08); }
-
-    /* Slide Bar / Dots Navigation */
     .slider-dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
-    .dot { width: 12px; height: 12px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; cursor: pointer; transition: 0.3s; }
-    .dot.active { background: var(--primary); width: 28px; border-radius: 10px; }
+    .dot { width: 10px; height: 10px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; cursor: pointer; transition: 0.3s; }
+    .dot.active { background: var(--primary); width: 24px; border-radius: 10px; }
 
-    /* Serve Menu Items Listing */
-    .category-tabs { display: flex; justify-content: center; gap: 12px; margin-bottom: 35px; flex-wrap: wrap; }
-    .category-btn { padding: 10px 22px; background: var(--card-bg); border: 1px solid var(--border); color: #fff; border-radius: 25px; cursor: pointer; font-weight: 500; font-size: 14px; transition: 0.3s; }
-    .category-btn.active, .category-btn:hover { background: var(--primary); border-color: var(--primary); }
+    /* Menu Items Listing */
+    .category-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 35px; flex-wrap: wrap; }
+    .category-btn { padding: 8px 18px; background: transparent; border: 1px solid var(--border); color: #fff; cursor: pointer; font-size: 13px; text-transform: uppercase; transition: 0.3s; }
+    .category-btn.active, .category-btn:hover { background: var(--primary); color: #000; border-color: var(--primary); }
 
-    .food-items-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-    .food-item { display: flex; gap: 15px; align-items: center; background: var(--card-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--border); }
-    .food-item img { width: 85px; height: 85px; border-radius: 10px; object-fit: cover; }
+    .food-items-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+    .food-item { display: flex; gap: 15px; align-items: center; background: var(--card-bg); padding: 15px; border: 1px solid var(--border); }
+    .food-item img { width: 80px; height: 80px; object-fit: cover; border: 1px solid var(--border); }
     .food-info { flex: 1; }
     .food-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
-    .food-name { font-size: 16px; font-weight: 600; color: #fff; }
-    .food-price { font-size: 16px; font-weight: 700; color: var(--primary); }
-    .food-desc { font-size: 13px; color: var(--text-gray); line-height: 1.4; }
+    .food-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: #fff; }
+    .food-price { font-size: 15px; font-weight: 700; color: var(--primary); }
+    .food-desc { font-size: 12px; color: var(--text-gray); line-height: 1.4; }
 
-    /* Reservation Section */
-    .reservation-section { background: linear-gradient(rgba(18, 22, 25, 0.9), rgba(18, 22, 25, 0.9)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80') center/cover; }
-    .reservation-form { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: rgba(28, 33, 38, 0.85); padding: 40px; border-radius: 16px; border: 1px solid var(--border); }
+    /* Reservation & Contact Section */
+    .contact-reservation-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 1000px; margin: 0 auto; }
+    .reservation-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: var(--card-bg); padding: 25px; border: 1px solid var(--border); }
     .form-group-full { grid-column: span 2; }
-    .reservation-form input, .reservation-form select { width: 100%; padding: 12px 16px; background: rgba(18, 22, 25, 0.8); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 14px; }
+    .reservation-form input, .reservation-form select { width: 100%; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: #fff; font-size: 13px; }
     .reservation-form input:focus, .reservation-form select:focus { border-color: var(--primary); outline: none; }
 
+    .chalkboard-box {
+      border: 8px solid #5c3a21; background: #0d0d0d; height: 100%; min-height: 250px; padding: 20px;
+      box-shadow: inset 0 0 10px #000; display: flex; flex-direction: column; justify-content: center; text-align: center;
+    }
+
     /* Footer */
-    footer { background: #0b0d0e; padding: 50px 8% 20px; border-top: 1px solid var(--border); }
-    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-bottom: 40px; }
-    .footer-box h4 { font-size: 18px; color: var(--primary); margin-bottom: 15px; }
-    .footer-box p, .footer-box a { color: var(--text-gray); font-size: 14px; text-decoration: none; display: block; margin-bottom: 8px; }
-    .social-links { display: flex; gap: 12px; margin-top: 15px; }
-    .social-links a { width: 38px; height: 38px; background: var(--card-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; border: 1px solid var(--border); transition: 0.3s; }
-    .social-links a:hover { background: var(--primary); border-color: var(--primary); }
-    .footer-bottom { text-align: center; border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-gray); }
+    footer { background: #f5f5f5; color: #333; padding: 40px 8% 20px; border-top: 1px solid var(--border); }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 30px; }
+    .footer-box h4 { font-family: 'Playfair Display', serif; font-size: 18px; color: #000; margin-bottom: 12px; }
+    .footer-box p, .footer-box a { color: #555; font-size: 13px; text-decoration: none; display: block; margin-bottom: 6px; }
+    .social-links { display: flex; gap: 10px; margin-top: 12px; }
+    .social-links a { width: 34px; height: 34px; background: #e0e0e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-size: 14px; transition: 0.3s; }
+    .social-links a:hover { background: var(--primary); color: #000; }
+    .footer-bottom { text-align: center; border-top: 1px solid #ddd; padding-top: 15px; font-size: 12px; color: #777; }
 
     /* Responsive Breakpoints */
     @media (max-width: 1024px) {
       .menu-cards-slide { grid-template-columns: repeat(2, 1fr); }
+      .gallery-slide { grid-template-columns: repeat(2, 1fr); }
+      .contact-reservation-wrapper { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
-      .navbar { flex-direction: column; gap: 12px; }
-      .nav-links { gap: 12px; font-size: 12px; flex-wrap: wrap; justify-content: center; }
-      .hero-title { font-size: 32px; }
+      .hero-title { font-size: 28px; }
+      .hero-wooden-frame { min-height: 400px; }
+      .hero-content { width: 92%; padding: 25px 15px; }
       .reservation-form { grid-template-columns: 1fr; }
       .form-group-full { grid-column: span 1; }
-      .gallery-slide { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 576px) {
       .menu-cards-slide { grid-template-columns: repeat(1, 1fr); }
+      .gallery-slide { grid-template-columns: repeat(1, 1fr); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
+  <!-- Top Navigation -->
   <nav class="navbar">
-    <a href="#" class="brand-logo" id="navBrand">Faast<span>Bite</span></a>
-    <ul class="nav-links">
-      <li><a href="#offers">Current Offers</a></li>
-      <li><a href="#menu">Our Menu</a></li>
-      <li><a href="#reservation">Reserve Seats</a></li>
-      <li><a href="#gallery">Gallery</a></li>
-      <li><a href="#contact">Contact Us</a></li>
-    </ul>
+    <img id="navLogoImg" class="top-logo-img" src="https://via.placeholder.com/150?text=Logo" alt="Logo">
+    <a href="#" class="brand-logo uppercase-brand" id="navBrand">Faast<span>Bite</span></a>
+    <div class="flag-stripe">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </nav>
 
   <!-- Hero Section -->
-  <div class="hero-wrapper">
-    <img id="heroBg" class="hero-bg" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=80" alt="Hero">
-    <div class="hero-content">
-      <div class="logo-badge">
-        <img id="logoImg" src="https://via.placeholder.com/150?text=Logo" alt="Logo">
-      </div>
-      <h1 class="hero-title" id="resName">FaastBite</h1>
-      <p class="hero-subtitle" id="resTagline">Taste & Quality Brought Together Perfectly</p>
-      
-      <div class="btn-group">
-        <a id="callBtn" href="#" class="btn-action btn-primary"><i class="fa-solid fa-phone"></i> Call Now</a>
-        <a id="waBtn" href="#" target="_blank" class="btn-action btn-outline"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
-        <a id="mapBtn" href="#" target="_blank" class="btn-action btn-outline"><i class="fa-solid fa-location-dot"></i> Find Us</a>
+  <div class="hero-container-outer">
+    <div class="hero-wooden-frame">
+      <img id="heroBg" class="hero-bg" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=80" alt="Hero">
+      <div class="hero-content">
+        <h1 class="hero-title uppercase-brand" id="resName">FaastBite</h1>
+        <p class="hero-type-subtitle">A Multi-cuisine Restaurant</p>
+
+        <div class="ornamental-divider">
+          <i class="fa-solid fa-wheat-awn"></i>
+        </div>
+
+        <p class="hero-subtitle" id="resTagline">Taste & Quality Brought Together Perfectly</p>
+        
+        <div class="btn-group">
+          <a id="callBtn" href="#" class="btn-action btn-primary"><i class="fa-solid fa-phone"></i> Call Now</a>
+          <a id="waBtn" href="#" target="_blank" class="btn-action btn-outline"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+          <a id="mapBtn" href="#" target="_blank" class="btn-action btn-outline"><i class="fa-solid fa-location-dot"></i> Find Us</a>
+        </div>
       </div>
     </div>
+  </div>
+
+  <!-- Welcome Section (Styled like Current Offers Header) -->
+  <div class="welcome-section">
+    <div class="welcome-heading-box">
+      <h2>Welcome to <span id="welcomeResName" class="uppercase-brand">FaastBite</span></h2>
+    </div>
+    <p id="welcomeDescText">Experience gourmet dining made with passion, fresh ingredients, and authentic flavors.</p>
   </div>
 
   <!-- Offers Section -->
@@ -243,13 +302,12 @@
   </div>
 
   <!-- Menu Section -->
-  <section id="menu" style="background: var(--card-bg);">
+  <section id="menu">
     <div class="section-title">
       <h2>Our <span>Menu Card</span></h2>
       <p>Explore our official physical menu card below (Click image to zoom)</p>
     </div>
     
-    <!-- Menu Card Slider Container (4 Items per slide) -->
     <div class="carousel-container">
       <div class="carousel-track" id="menuCardsTrack"></div>
     </div>
@@ -267,35 +325,6 @@
     <div class="food-items-grid" id="foodItemsGrid"></div>
   </section>
 
-  <!-- Reservation Section -->
-  <section id="reservation" class="reservation-section">
-    <div class="section-title">
-      <h2>Reserve Your Seats <span>To Confirm</span></h2>
-      <p>If you come with your family or friends, book your table in advance</p>
-    </div>
-    <form class="reservation-form" id="resForm">
-      <div><input type="text" id="resGuestName" placeholder="Your Full Name" required></div>
-      <div><input type="tel" id="resGuestPhone" placeholder="Phone Number" required></div>
-      <div><input type="email" id="resGuestEmail" placeholder="Email Address"></div>
-      <div>
-        <select id="resGuestCount" required>
-          <option value="">Number of Persons</option>
-          <option value="1 Person">1 Person</option>
-          <option value="2 Persons">2 Persons</option>
-          <option value="4 Persons">4 Persons</option>
-          <option value="6+ Family">6+ Family / Group</option>
-        </select>
-      </div>
-      <div><input type="date" id="resDate" required></div>
-      <div><input type="time" id="resTime" required></div>
-      <div class="form-group-full">
-        <button type="submit" class="btn-action btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
-          Make Reservation
-        </button>
-      </div>
-    </form>
-  </section>
-
   <!-- Gallery Section -->
   <section id="gallery">
     <div class="section-title">
@@ -303,24 +332,59 @@
       <p>Capturing joyful moments and delightful dishes</p>
     </div>
 
-    <!-- Gallery Slider Container (3 Items per slide) -->
     <div class="carousel-container">
       <div class="carousel-track" id="galleryTrack"></div>
     </div>
     <div class="slider-dots" id="galleryDots"></div>
   </section>
 
+  <!-- Reservation & Contact Section -->
+  <section id="reservation">
+    <div class="section-title">
+      <h2>Reserve Your Seats & <span>Contact Us</span></h2>
+      <p>Book your table in advance or reach out to us</p>
+    </div>
+    <div class="contact-reservation-wrapper">
+      <form class="reservation-form" id="resForm">
+        <div><input type="text" id="resGuestName" placeholder="Your Full Name" required></div>
+        <div><input type="tel" id="resGuestPhone" placeholder="Phone Number" required></div>
+        <div><input type="email" id="resGuestEmail" placeholder="Email Address"></div>
+        <div>
+          <select id="resGuestCount" required>
+            <option value="">Number of Persons</option>
+            <option value="1 Person">1 Person</option>
+            <option value="2 Persons">2 Persons</option>
+            <option value="4 Persons">4 Persons</option>
+            <option value="6+ Family">6+ Family / Group</option>
+          </select>
+        </div>
+        <div><input type="date" id="resDate" required></div>
+        <div><input type="time" id="resTime" required></div>
+        <div class="form-group-full">
+          <button type="submit" class="btn-action btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+            Make Reservation
+          </button>
+        </div>
+      </form>
+
+      <div class="chalkboard-box">
+        <h3 style="font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 10px;" id="boxResName"><span class="uppercase-brand">FaastBite</span> Special</h3>
+        <p style="font-size: 13px; color: var(--text-gray);">Experience gourmet dining made with passion and fresh local ingredients.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer id="contact">
     <div class="footer-grid">
       <div class="footer-box">
-        <h4 id="footerName">FaastBite</h4>
+        <h4 id="footerName" class="uppercase-brand">FaastBite</h4>
         <p id="footerAddress">Loading address...</p>
         <p id="footerHours"><i class="fa-regular fa-clock"></i> Loading hours...</p>
       </div>
 
       <div class="footer-box">
-        <h4>Contact Us</h4>
+        <h4>Contact Details</h4>
         <p id="phoneText">Phone: -</p>
         <p id="emailText">Email: -</p>
       </div>
@@ -337,7 +401,7 @@
     </div>
 
     <div class="footer-bottom">
-      &copy; 2026 FaastBite | All Rights Reserved.
+      &copy; 2026 <span class="uppercase-brand">FaastBite</span> | All Rights Reserved.
     </div>
   </footer>
 
@@ -400,7 +464,6 @@
       });
     }
 
-    /* Slider Helper Function */
     function setupAutoSlider(trackId, dotsId, slideCount, intervalTime = 5000) {
       let currentIndex = 0;
       const track = document.getElementById(trackId);
@@ -451,7 +514,6 @@
 
     async function loadData() {
       try {
-        // 1. Load Main Data
         const docRef = doc(db, "restaurants", "mainData");
         const docSnap = await getDoc(docRef);
 
@@ -460,10 +522,16 @@
 
           if (d.restaurantName) {
             document.getElementById("resName").innerText = d.restaurantName;
+            document.getElementById("welcomeResName").innerText = d.restaurantName;
             document.getElementById("navBrand").innerHTML = `${d.restaurantName.slice(0, 5)}<span>${d.restaurantName.slice(5)}</span>`;
             document.getElementById("footerName").innerText = d.restaurantName;
+            document.getElementById("boxResName").innerHTML = `<span class="uppercase-brand">${d.restaurantName}</span> Special`;
           }
           if (d.tagline) document.getElementById("resTagline").innerText = d.tagline;
+          
+          if (d.welcomeDesc) {
+            document.getElementById("welcomeDescText").innerText = d.welcomeDesc;
+          }
 
           if (d.phone) {
             document.getElementById("callBtn").href = `tel:${d.phone}`;
@@ -482,10 +550,11 @@
           if (d.youtube) document.getElementById("ytLink").href = d.youtube;
           if (d.tiktok) document.getElementById("ttLink").href = d.tiktok;
 
-          if (d.logoUrl) document.getElementById("logoImg").src = d.logoUrl;
+          if (d.logoUrl) {
+            document.getElementById("navLogoImg").src = d.logoUrl;
+          }
           if (d.coverUrl) document.getElementById("heroBg").src = d.coverUrl;
 
-          // Offers Render
           const offersContainer = document.getElementById("offersContainer");
           offersContainer.innerHTML = "";
           if (d.offersList && d.offersList.length > 0) {
@@ -501,7 +570,6 @@
             offersContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-gray);">No active offers currently available.</p>`;
           }
 
-          // Category & Foods
           const categoryTabs = document.getElementById("categoryTabs");
           if (d.categories && d.categories.length > 0) {
             d.categories.forEach(cat => {
@@ -515,7 +583,6 @@
           }
         }
 
-        // 2. Load Separated Menu Cards Data with Slider (4 Items per slide, Full Image)
         const menuCardsTrack = document.getElementById("menuCardsTrack");
         menuCardsTrack.innerHTML = "";
         const menuSnap = await getDoc(doc(db, "restaurants", "menuCards"));
@@ -524,7 +591,7 @@
           const cardsList = menuData.menuCardUrls || [];
           
           if (cardsList.length > 0) {
-            const chunkSize = 4; // ৪টি করে ছবি প্রতি স্লাইডে
+            const chunkSize = 4;
             let slideCount = 0;
             
             for (let i = 0; i < cardsList.length; i += chunkSize) {
@@ -550,7 +617,6 @@
           }
         }
 
-        // 3. Load Separated Gallery Data with Slider (3 Items per slide, auto-change every 5 seconds)
         const galleryTrack = document.getElementById("galleryTrack");
         galleryTrack.innerHTML = "";
         const gallerySnap = await getDoc(doc(db, "restaurants", "gallery"));
